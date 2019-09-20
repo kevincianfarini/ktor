@@ -14,7 +14,8 @@ interface Parameters : StringValues {
      * Returns a [UrlEncodingOption] instance
      */
     @KtorExperimentalAPI
-    fun urlEncodingOption(): UrlEncodingOption = UrlEncodingOption.DEFAULT
+    val urlEncodingOption: UrlEncodingOption
+        get() = UrlEncodingOption.DEFAULT
 
     companion object {
         /**
@@ -36,7 +37,7 @@ interface Parameters : StringValues {
 class ParametersBuilder(size: Int = 8) : StringValuesBuilder(true, size) {
     private var urlEncodingOption: UrlEncodingOption = UrlEncodingOption.DEFAULT
 
-    constructor(size: Int = 8, urlEncodingOption: UrlEncodingOption = UrlEncodingOption.DEFAULT) : this(size) {
+    constructor(size: Int = 8, urlEncodingOption: UrlEncodingOption) : this(size) {
         this.urlEncodingOption = urlEncodingOption
     }
 
@@ -87,16 +88,14 @@ fun parametersOf(vararg pairs: Pair<String, List<String>>): Parameters = Paramet
 @Suppress("KDocMissingDocumentation")
 @InternalAPI
 class ParametersImpl(values: Map<String, List<String>> = emptyMap()) : Parameters, StringValuesImpl(true, values) {
-    private var urlEncodingOption: UrlEncodingOption = UrlEncodingOption.DEFAULT
+    private var option: UrlEncodingOption = super.urlEncodingOption
+    override val urlEncodingOption: UrlEncodingOption
+        get() = option
 
-    constructor(
-        values: Map<String, List<String>> = emptyMap(),
-        urlEncodingOption: UrlEncodingOption = UrlEncodingOption.DEFAULT
-    ) : this(values) {
-        this.urlEncodingOption = urlEncodingOption
+    constructor(values: Map<String, List<String>> = emptyMap(), urlEncodingOption: UrlEncodingOption) : this(values) {
+        this.option = urlEncodingOption
     }
 
-    override fun urlEncodingOption() = urlEncodingOption
     override fun toString(): String = "Parameters ${entries()}"
 }
 

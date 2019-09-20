@@ -84,7 +84,7 @@ fun List<Pair<String, String?>>.formUrlEncodeTo(
  */
 fun Parameters.formUrlEncode(): String = entries()
     .flatMap { e -> e.value.map { e.key to it } }
-    .formUrlEncode(urlEncodingOption())
+    .formUrlEncode(urlEncodingOption)
 
 /**
  * Encode form parameters to the specified [out] appendable
@@ -92,5 +92,5 @@ fun Parameters.formUrlEncode(): String = entries()
 fun Parameters.formUrlEncodeTo(out: Appendable) {
     entries()
         .flatMap { e -> if (e.value.isEmpty()) listOf(e.key to null) else e.value.map { e.key to it } }
-        .formUrlEncodeTo(out, urlEncodingOption())
+        .formUrlEncodeTo(out, urlEncodingOption)
 }
